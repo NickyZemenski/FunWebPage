@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using UdemyWebPage.Data;
-using UdemyWebPage.Models;
+using FunWebPage.Models;
+using FunWebPage.DataAccess.Data;
 
-namespace UdemyWebPage.Controllers
+namespace FunWebPage.Controllers
 {
     public class CategoryController : Controller
     {

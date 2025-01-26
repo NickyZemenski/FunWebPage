@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace UdemyWebPage.Models
+namespace FunWebPage.Models
 {
     public class CategoryModel
     {

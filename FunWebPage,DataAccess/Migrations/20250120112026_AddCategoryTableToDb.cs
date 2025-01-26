@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace UdemyWebPage.Migrations
+namespace FunWebPage.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTableToDb : Migration

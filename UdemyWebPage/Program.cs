@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using UdemyWebPage.Data;
+using FunWebPage.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

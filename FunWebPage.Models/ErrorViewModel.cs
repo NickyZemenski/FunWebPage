@@ -1,4 +1,4 @@
-namespace UdemyWebPage.Models
+namespace FunWebPage.Models
 {
     public class ErrorViewModel
     {

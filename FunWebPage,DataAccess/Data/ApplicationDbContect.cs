@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UdemyWebPage.Models;
+﻿using FunWebPage.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace UdemyWebPage.Data
+namespace FunWebPage.DataAccess.Data
 {
     public class ApplicationDbContect : DbContext
     {

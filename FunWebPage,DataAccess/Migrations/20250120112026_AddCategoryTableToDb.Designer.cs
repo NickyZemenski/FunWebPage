@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UdemyWebPage.Data;
+using FunWebPage.DataAccess.Data;
 
 #nullable disable
 
-namespace UdemyWebPage.Migrations
+namespace FunWebPage.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContect))]
     [Migration("20250120112026_AddCategoryTableToDb")]

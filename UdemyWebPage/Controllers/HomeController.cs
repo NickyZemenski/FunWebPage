@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using UdemyWebPage.Models;
+using FunWebPage.Models;
 
-namespace UdemyWebPage.Controllers
+namespace FunWebPage.Controllers
 {
     public class HomeController : Controller
     {
