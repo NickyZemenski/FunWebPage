@@ -2,27 +2,29 @@
 using System.Linq;
 using FunWebPage.Models;
 using FunWebPage.DataAccess.Data;
+using FunWebPage_DataAccess.Repository.IRepository;
 
-namespace FunWebPage.Controllers
+namespace FunWebPage.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContect _db;
-        public CategoryController(ApplicationDbContect db)
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryController(ICategoryRepository db)
         {
-            _db = db;
+            _categoryRepository = db;
         }
         public IActionResult Index()
         {
-            List<CategoryModel> objCategoryList = _db.Categories.ToList();
+            List<CategoryModel> objCategoryList = _categoryRepository.GetAll().ToList();
             return View(objCategoryList);
-        }    
+        }
         public IActionResult Create()
         {
             return View();
         }
-        [HttpPost]     
-        
+        [HttpPost]
+
         public IActionResult Create(CategoryModel obj)
         {
             if (obj.Name == obj.DisplayOrder.ToString())      // custom validation
@@ -31,26 +33,27 @@ namespace FunWebPage.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _categoryRepository.Add(obj);
+                _categoryRepository.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
-           
-                return View();
-            
+
+            return View();
+
         }
         public IActionResult Edit(int? categoryId)
         {
-            if (categoryId == null || categoryId == 0) { 
+            if (categoryId == null || categoryId == 0)
+            {
                 return NotFound();
             }
             //  CategoryModel? categoryFromDb = _db.Categories.Find(categoryId);    Both this and next line do the same thing just different ways to do so.
             //   CategoryModel? categoryFromDb = _db.Categories.Where(u=>u.CategoryId==categoryId).FirstOrDefault(); 
-            CategoryModel? categoryFromDb = _db.Categories.FirstOrDefault(u=>u.CategoryId== categoryId); 
+            CategoryModel? categoryFromDb = _categoryRepository.Get(u => u.CategoryId == categoryId);
             if (categoryFromDb == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return View(categoryFromDb);
         }
@@ -65,8 +68,8 @@ namespace FunWebPage.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _categoryRepository.Update(obj);
+                _categoryRepository.Save();
                 TempData["success"] = "Category updated successfully";
 
                 return RedirectToAction("Index");
@@ -81,9 +84,9 @@ namespace FunWebPage.Controllers
             {
                 return NotFound();
             }
-            
 
-            CategoryModel? categoryFromDb = _db.Categories.FirstOrDefault(u => u.CategoryId == categoryId);
+
+            CategoryModel? categoryFromDb = _categoryRepository.Get(u => u.CategoryId == categoryId); ;
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -95,16 +98,16 @@ namespace FunWebPage.Controllers
 
         public IActionResult DeletePOST(int? categoryId)
         {
-            CategoryModel? obj = _db.Categories.Find(categoryId);
+            CategoryModel? obj = _categoryRepository.Get(u => u.CategoryId == categoryId);
             if (obj.Name == obj.DisplayOrder.ToString())      // custom validation
             {
                 ModelState.AddModelError("name", "Name and Display Number Cant match");
             }
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            _categoryRepository.Delete(obj);
+            _categoryRepository.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
-          
+
 
         }
     }
