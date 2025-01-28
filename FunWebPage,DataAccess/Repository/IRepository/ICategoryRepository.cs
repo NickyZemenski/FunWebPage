@@ -10,6 +10,6 @@ namespace FunWebPage_DataAccess.Repository.IRepository
     public interface ICategoryRepository : IRepository<CategoryModel>
     {
         void Update(CategoryModel category);
-        void Save();
+      
     }
 }

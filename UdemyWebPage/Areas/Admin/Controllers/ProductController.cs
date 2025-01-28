@@ -3,24 +3,37 @@ using System.Linq;
 using FunWebPage.Models;
 using FunWebPage.DataAccess.Data;
 using FunWebPage_DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FunWebPage.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductController : Controller
     {
-        private readonly IProductRepository _ProductRepository;
-        public ProductController(IProductRepository db)
+
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductController(IUnitOfWork unitOfWork)
         {
-            _ProductRepository = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<ProductModel> objProductList = _ProductRepository.GetAll().ToList();
+            List<ProductModel> objProductList = _unitOfWork.Product.GetAll().ToList();
+          
+
             return View(objProductList);
         }
         public IActionResult Create()
         {
+
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.CategoryId.ToString()
+            });
+
+            ViewBag.CategoryList = CategoryList;
+
             return View();
         }
         [HttpPost]
@@ -30,8 +43,8 @@ namespace FunWebPage.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _ProductRepository.Add(obj);
-                _ProductRepository.Save();
+                _unitOfWork.Product.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
@@ -46,7 +59,7 @@ namespace FunWebPage.Areas.Admin.Controllers
                 return NotFound();
             }
        
-            ProductModel? ProductFromDb = _ProductRepository.Get(u => u.ProductId == ProductId);
+            ProductModel? ProductFromDb = _unitOfWork.Product.Get(u => u.ProductId == ProductId);
             if (ProductFromDb == null)
             {
                 return NotFound();
@@ -61,8 +74,8 @@ namespace FunWebPage.Areas.Admin.Controllers
    
             if (ModelState.IsValid)
             {
-                _ProductRepository.Update(obj);
-                _ProductRepository.Save();
+                _unitOfWork.Product.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Product updated successfully";
 
                 return RedirectToAction("Index");
@@ -79,7 +92,7 @@ namespace FunWebPage.Areas.Admin.Controllers
             }
 
 
-            ProductModel? ProductFromDb = _ProductRepository.Get(u => u.ProductId == ProductId); ;
+            ProductModel? ProductFromDb = _unitOfWork.Product.Get(u => u.ProductId == ProductId); ;
             if (ProductFromDb == null)
             {
                 return NotFound();
@@ -91,10 +104,10 @@ namespace FunWebPage.Areas.Admin.Controllers
 
         public IActionResult DeletePOST(int? ProductId)
         {
-            ProductModel? obj = _ProductRepository.Get(u => u.ProductId == ProductId);
- 
-            _ProductRepository.Delete(obj);
-            _ProductRepository.Save();
+            ProductModel? obj = _unitOfWork.Product.Get(u => u.ProductId == ProductId);
+
+            _unitOfWork.Product.Delete(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Product deleted successfully";
             return RedirectToAction("Index");
 

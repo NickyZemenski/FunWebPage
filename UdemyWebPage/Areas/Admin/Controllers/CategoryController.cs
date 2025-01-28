@@ -9,14 +9,14 @@ namespace FunWebPage.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryController(ICategoryRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _categoryRepository = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<CategoryModel> objCategoryList = _categoryRepository.GetAll().ToList();
+            List<CategoryModel> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -33,8 +33,8 @@ namespace FunWebPage.Areas.Admin.Controllers
             }
             if (ModelState.IsValid)
             {
-                _categoryRepository.Add(obj);
-                _categoryRepository.Save();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -50,7 +50,7 @@ namespace FunWebPage.Areas.Admin.Controllers
             }
             //  CategoryModel? categoryFromDb = _db.Categories.Find(categoryId);    Both this and next line do the same thing just different ways to do so.
             //   CategoryModel? categoryFromDb = _db.Categories.Where(u=>u.CategoryId==categoryId).FirstOrDefault(); 
-            CategoryModel? categoryFromDb = _categoryRepository.Get(u => u.CategoryId == categoryId);
+            CategoryModel? categoryFromDb = _unitOfWork.Category.Get(u => u.CategoryId == categoryId);
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -68,8 +68,8 @@ namespace FunWebPage.Areas.Admin.Controllers
             }
             if (ModelState.IsValid)
             {
-                _categoryRepository.Update(obj);
-                _categoryRepository.Save();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
 
                 return RedirectToAction("Index");
@@ -86,7 +86,7 @@ namespace FunWebPage.Areas.Admin.Controllers
             }
 
 
-            CategoryModel? categoryFromDb = _categoryRepository.Get(u => u.CategoryId == categoryId); ;
+            CategoryModel? categoryFromDb = _unitOfWork.Category.Get(u => u.CategoryId == categoryId); ;
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -98,13 +98,13 @@ namespace FunWebPage.Areas.Admin.Controllers
 
         public IActionResult DeletePOST(int? categoryId)
         {
-            CategoryModel? obj = _categoryRepository.Get(u => u.CategoryId == categoryId);
+            CategoryModel? obj = _unitOfWork.Category.Get(u => u.CategoryId == categoryId);
             if (obj.Name == obj.DisplayOrder.ToString())      // custom validation
             {
                 ModelState.AddModelError("name", "Name and Display Number Cant match");
             }
-            _categoryRepository.Delete(obj);
-            _categoryRepository.Save();
+            _unitOfWork.Category.Delete(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
 
