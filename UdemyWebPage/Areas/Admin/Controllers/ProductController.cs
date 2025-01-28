@@ -4,6 +4,7 @@ using FunWebPage.Models;
 using FunWebPage.DataAccess.Data;
 using FunWebPage_DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using FunWebPage.Models.ViewModels;
 
 namespace FunWebPage.Areas.Admin.Controllers
 {
@@ -26,30 +27,46 @@ namespace FunWebPage.Areas.Admin.Controllers
         public IActionResult Create()
         {
 
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            //  ViewBag.CategoryList = CategoryList;
+
+            ProductVM productVM = new()
             {
-                Text = u.Name,
-                Value = u.CategoryId.ToString()
-            });
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.CategoryId.ToString()
+                }),
+                Product = new ProductModel()
+            };
 
-            ViewBag.CategoryList = CategoryList;
-
-            return View();
+            return View(productVM);
         }
         [HttpPost]
 
-        public IActionResult Create(ProductModel obj)
+        public IActionResult Create(ProductVM productVM)
         {
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj);
+                _unitOfWork.Product.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
+            else
+            {
 
-            return View();
+                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.CategoryId.ToString()
+                });
+                   
+                
+
+                return View(productVM);
+            }
+           
 
         }
         public IActionResult Edit(int? ProductId)
