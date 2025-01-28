@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunWebPage", "UdemyWebPage\FunWebPage.csproj", "{AB28A2B2-C77A-43CD-A960-EA6E44B2D000}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunWebPage,DataAccess", "FunWebPage,DataAccess\FunWebPage,DataAccess.csproj", "{3854E4EA-34AD-4E40-9A78-E367500B2B83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunWebPage.DataAccess", "FunWebPage,DataAccess\FunWebPage.DataAccess.csproj", "{3854E4EA-34AD-4E40-9A78-E367500B2B83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunWebPage.Models", "FunWebPage.Models\FunWebPage.Models.csproj", "{B52F3697-26AB-4677-9B68-828DF93BF74A}"
 EndProject

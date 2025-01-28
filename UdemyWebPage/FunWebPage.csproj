@@ -17,13 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FunWebPage,DataAccess\FunWebPage,DataAccess.csproj" />
+    <ProjectReference Include="..\FunWebPage,DataAccess\FunWebPage.DataAccess.csproj" />
     <ProjectReference Include="..\FunWebPage.Models\FunWebPage.Models.csproj" />
     <ProjectReference Include="..\FunWebPage.Utility\FunWebPage.Utility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
