@@ -21,4 +21,8 @@
     <ProjectReference Include="..\FunWebPage.Utility\FunWebPage.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

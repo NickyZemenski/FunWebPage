@@ -22,4 +22,8 @@
     <ProjectReference Include="..\FunWebPage.Utility\FunWebPage.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product\" />
+  </ItemGroup>
+
 </Project>
