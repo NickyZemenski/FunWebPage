@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using FunWebPage.DataAccess.Data;
 using FunWebPage_DataAccess.Repository.IRepository;
 using FunWebPage_DataAccess.Repository;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContect>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContect>();
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 

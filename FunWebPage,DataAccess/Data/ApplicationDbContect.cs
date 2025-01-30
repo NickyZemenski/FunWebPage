@@ -1,9 +1,11 @@
 ﻿using FunWebPage.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FunWebPage.DataAccess.Data
 {
-    public class ApplicationDbContect : DbContext
+    public class ApplicationDbContect : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContect(DbContextOptions<ApplicationDbContect> options) :base(options)
         {
@@ -16,6 +18,11 @@ namespace FunWebPage.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
+            base.OnModelCreating(modelBuilder);
+
+
             modelBuilder.Entity<CategoryModel>().HasData(
                 new CategoryModel { CategoryId=1, Name= "Action", DisplayOrder=1},
                 new CategoryModel { CategoryId=2, Name= "Romance", DisplayOrder=2},
