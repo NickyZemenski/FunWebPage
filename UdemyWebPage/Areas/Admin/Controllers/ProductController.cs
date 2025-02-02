@@ -6,10 +6,13 @@ using FunWebPage_DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FunWebPage.Models.ViewModels;
 using Microsoft.CodeAnalysis;
+using FunWebPage.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FunWebPage.Areas.Admin.Controllers
 {
     [Area("Admin")]
+ //   [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
 
@@ -139,6 +142,14 @@ namespace FunWebPage.Areas.Admin.Controllers
         public IActionResult DeletePOST(int? ProductId)
         {
             ProductModel? obj = _unitOfWork.Product.Get(u => u.ProductId == ProductId);
+
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, obj.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath)) { 
+            
+            System.IO.File.Delete(oldImagePath);
+            }
+                
 
             _unitOfWork.Product.Delete(obj);
             _unitOfWork.Save();

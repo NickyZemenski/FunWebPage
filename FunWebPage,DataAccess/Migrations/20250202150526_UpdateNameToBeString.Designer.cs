@@ -4,6 +4,7 @@ using FunWebPage.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunWebPage.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContect))]
-    partial class ApplicationDbContectModelSnapshot : ModelSnapshot
+    [Migration("20250202150526_UpdateNameToBeString")]
+    partial class UpdateNameToBeString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,38 +64,6 @@ namespace FunWebPage.DataAccess.Migrations
                             DisplayOrder = 3,
                             Name = "Fantasy"
                         });
-                });
-
-            modelBuilder.Entity("FunWebPage.Models.CompanyModel", b =>
-                {
-                    b.Property<int>("CompanyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompanyId"));
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CompanyId");
-
-                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("FunWebPage.Models.ProductModel", b =>

@@ -3,10 +3,14 @@ using System.Linq;
 using FunWebPage.Models;
 using FunWebPage.DataAccess.Data;
 using FunWebPage_DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
+using FunWebPage.Utility;
 
 namespace FunWebPage.Areas.Admin.Controllers
 {
     [Area("Admin")]
+ //   [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
