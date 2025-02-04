@@ -2,6 +2,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using FunWebPage.Models;
 using FunWebPage_DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace FunWebPage.Areas.Customer.Controllers
 {
@@ -25,10 +27,44 @@ namespace FunWebPage.Areas.Customer.Controllers
         }
         public IActionResult Details(int productId)
         {
-            ProductModel product = _unitOfWork.Product.Get(u=>u.ProductId==productId, includeProperties: "Category");
-            return View(product);
-        }
+            ShoppingCart cart = new()
+            {
+                Product = _unitOfWork.Product.Get(u => u.ProductId == productId, includeProperties: "Category"),
+                Count = 1,
+                ProductId = productId
+            };
 
+
+           
+            return View(cart);
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
+
+            ShoppingCart shoppingCartFromDb = _unitOfWork.ShoppingCart.Get(
+                u=> u.ApplicationUserId == userId
+                && u.ProductId==shoppingCart.ProductId);
+
+            if (shoppingCartFromDb != null)
+            {
+                shoppingCartFromDb.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(shoppingCartFromDb);
+            }
+            else
+            {
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            }
+
+            TempData["success"] = "Shopping Cart Updated Successfully";
+            _unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
+        }
         public IActionResult Privacy()
         {
             return View();
